@@ -1,0 +1,36 @@
+Imports System.Runtime.InteropServices
+Imports EL
+Public Class Form1
+
+    Dim EN As Boolean = False
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+        If EN = False Then
+            Timer1.Start()
+            Button1.Text = "Stop!"
+            EN = True
+        Else
+            Timer1.Stop()
+            Button1.Text = "Start!"
+            EN = False
+        End If
+    End Sub
+
+    Private Sub TrackBar1_Scroll(sender As Object, e As EventArgs) Handles TrackBar1.Scroll
+        If TrackBar1.Value = 0 Then
+            Timer1.Interval = 100
+        ElseIf TrackBar1.Value = 1 Then
+            Timer1.Interval = 10
+        Else
+            Timer1.Interval = 1
+        End If
+    End Sub
+
+    Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
+        Try
+            EL.EmailLib.SendMail(TextBox1.Text, TextBox2.Text, TextBox3.Text, TextBox4.Text, RichTextBox1.Text, TextBox5.Text, False, NumericTextBox1.Text)
+        Catch ex As Exception
+            Timer1.Stop()
+            MsgBox("Fail!", MsgBoxStyle.Critical)
+        End Try
+    End Sub
+End Class
